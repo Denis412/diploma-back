@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  nest-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      ENVIRONMENT: develop
+      DB_TYPE: mysql
+      DB_PORT: 3306
+      DB_HOST: mysql_server
+      DB_NAME: diploma
+      DB_USERNAME: denis_diploma
+      DB_PASSWORD: diploma
+      JWT_SECRET: hkjLGUYGBJkhgLKUHihg78HIUBO9_biu18vb8pibu
+    container_name: diploma_backend
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    external: true
