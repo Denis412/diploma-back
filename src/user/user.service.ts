@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -23,7 +23,13 @@ export class UserService {
     return await this.userRepository.save(createdUser);
   }
 
-  findOneBy(key: string, value: any) {
-    return this.userRepository.findOneBy({ [key]: value });
+  async findOneBy(key: string, value: any) {
+    const targetUser = await this.userRepository.findOneBy({ [key]: value });
+
+    if (!targetUser) {
+      throw new NotFoundException(`Пользователь с ${key} ${value} не найден.`);
+    }
+
+    return targetUser;
   }
 }
